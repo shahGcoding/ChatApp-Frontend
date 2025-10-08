@@ -6,8 +6,8 @@ import { Input } from "../components/ui/input.jsx";
 import { useForm } from "react-hook-form";
 
 export function Signup() {
-
   const [loading, setLoading] = useState(false);
+  const [avatar, setAvatar] = useState(null);
   const navigate = useNavigate();
 
   const {
@@ -19,11 +19,13 @@ export function Signup() {
   const create = async (data) => {
     setLoading(true);
     try {
-      const userData = await registerUser({
-        username: data.username,
-        email: data.email,
-        password: data.password,
-      });
+      const formData = new FormData();
+      formData.append("username", data.username);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      if (avatar) formData.append("avatar", avatar);
+
+      const userData = await registerUser(formData);
       if (userData) {
         navigate("/verify-email");
       }
@@ -86,6 +88,18 @@ export function Signup() {
             {errors.password && errors.password.type === "required" && (
               <p className="text-sm text-red-600">Password is required</p>
             )}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Profile Picture (optional)
+              </label>
+              <Input
+                type="file"
+                accept="image/"
+                onChange={(e) => setAvatar(e.target.files[0])}
+                className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500"
+              />
+            </div>
 
             <Button
               type="submit"

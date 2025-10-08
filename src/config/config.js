@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API = axios.create({ baseURL: "http://localhost:7000/api/v1", withCredentials: true });
 
-export const registerUser = async (data) => {
-    const response = await API.post("/users/register", data);
+export const registerUser = async (formData) => {
+    const response = await API.post("/users/register", formData);
     return response.data;
 }
 
@@ -50,7 +50,12 @@ export const sendMessage = async (data) => {
 }
 
 export const getConversation = async (userId, contactId) => {
-    const response = await API.post(`/messages/getConversation/${userId}/${contactId}`);
+    const response = await API.get(`/messages/getConversation/${userId}/${contactId}`);
+    return response.data?.data;
+}
+
+export const getUserConversations = async (userId) => {
+    const response = await API.get(`/messages/getuserconversation/${userId}`);
     return response.data?.data;
 }
 

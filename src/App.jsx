@@ -43,9 +43,9 @@ function App() {
   }, [dispatch, navigate, userData]);
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gradient-to-br from-green-100 via-white to-green-200 px-4">
+    <div className="h-screen flex items-center justify-center">
       {!loading ? (
-        <div className="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-6 md:p-10">
+        <div className="w-full bg-white shadow-lg rounded-2xl">
           <Outlet />
         </div>
       ) : (

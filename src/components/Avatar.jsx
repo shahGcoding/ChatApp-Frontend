@@ -1,14 +1,42 @@
+// import React from "react";
+
+// function Avatar({width = "100px", src, alt= "user Avatar"}) {
+//   const defaultUser = "/2289_SkVNQSBGQU1PIDEwMjgtMTIy.jpg";
+//   return (
+//     <img
+//       src={src || defaultUser}
+//       alt={alt}
+//       className="w-32 h-32 rounded-full"
+//       style={{ width, height: "auto", display: "block" }}
+//     />
+//   ); 
+// }
+
+// export default Avatar;
+
 import React from "react";
 
-function Avatar({width = "100px"}) {
+function Avatar({ src, size = 80, alt = "User Avatar" }) {
+  const defaultAvatar = "/2289_SkVNQSBGQU1PIDEwMjgtMTIy.jpg"; // fallback if no avatar uploaded
+
   return (
-    <img
-      src="/2289_SkVNQSBGQU1PIDEwMjgtMTIy.jpg"
-      alt="avatar"
-      className="w-32 h-32 rounded-full"
-      style={{ width, height: "auto", display: "block" }}
-    />
+    <div
+      className="rounded-full overflow-hidden border border-gray-300 shadow-sm flex items-center justify-center bg-gray-100"
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        minWidth: `${size}px`,
+        minHeight: `${size}px`,
+      }}
+    >
+      <img
+        src={src || defaultAvatar}
+        alt={alt}
+        className="w-full h-full object-cover"
+      />
+    </div>
   );
 }
 
 export default Avatar;
+
