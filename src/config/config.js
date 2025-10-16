@@ -44,10 +44,20 @@ export const getAllUsers = async () => {
 
 // message api
 
-export const sendMessage = async (data) => {
-    const response = await API.post("/messages/sendMessage", data);
-    return response.data?.data;
-}
+// export const sendMessage = async (data) => {
+//     const response = await API.post("/messages/sendMessage", data);
+//     return response.data?.data;
+// }
+
+export const sendMessage = async (data, isFile = false) => {
+  const config = isFile
+    ? { headers: { "Content-Type": "multipart/form-data" } }
+    : {};
+
+  const response = await API.post("/messages/sendMessage", data, config);
+  return response.data?.data;
+};
+
 
 export const getConversation = async (userId, contactId) => {
     const response = await API.get(`/messages/getConversation/${userId}/${contactId}`);
@@ -59,8 +69,8 @@ export const getUserConversations = async (userId) => {
     return response.data?.data;
 }
 
-export const markMessagesAsRead = async (data) => {
-    const response = await API.put("/messages/markMessagesAsRead", data);
+export const markMessagesAsRead = async (userId, contactId) => {
+    const response = await API.put(`/messages/markasread/${userId}/${contactId}`);
     return response.data?.data;
 }
 

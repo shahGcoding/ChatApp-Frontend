@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getAllUsers, getUserConversations } from "../config/config.js";
-import { Search } from "lucide-react";
-import { useSelector } from "react-redux";
+import { getAllUsers, getUserConversations, logoutUser } from "../config/config.js";
+import { LogOut, Search, Users } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import LogoutBtn from "../components/LogoutBtn.jsx";
 import { Input } from "../components/ui/input.js";
 import Avatar from "../components/Avatar.jsx";
 import { MoreVertical } from "lucide-react";
+import { logout } from "../store/authSlice.js";
 
 export function Home() {
   const [users, setUsers] = useState([]);
@@ -16,9 +16,9 @@ export function Home() {
   const [SearchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [hovered, setHovered] = useState(null);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const userId = userData?._id;
   //const {contactId} = useParams();
@@ -52,7 +52,6 @@ export function Home() {
     fetchConversation();
   }, [userId]);
 
-  
   // Fetch all users
   useEffect(() => {
     const getUsers = async () => {
@@ -83,6 +82,17 @@ export function Home() {
     }
   }, [SearchTerm, allUsers]);
 
+  const handleLogout = () => {
+
+    if (window.confirm("Are you sure you want to logout?")) {
+      logoutUser().then(() => {
+        dispatch(logout());
+        navigate("/login");
+      })
+    }
+
+  }
+
   const navLinkStyle = ({ isActive }) =>
     `flex gap-3 items-center px-4 py-2 rounded-xl font-medium transition-colors ${
       isActive
@@ -93,8 +103,10 @@ export function Home() {
   return (
     <div className="flex h-screen">
       {/* Left sidebar with all users */}
-      <aside className="w-1/4 min-w-[260px] flex flex-col pt-4 px-3 overflow-y-auto bg-white 
-                       md:w-1/3 sm:w-full sm:h-[50vh]  sm:overflow-x-hidden">
+      <aside
+        className="w-1/4 min-w-[260px] flex flex-col pt-4 px-3 border-r border-gray-400 overflow-y-auto bg-white 
+                       md:w-1/3 sm:w-full sm:overflow-x-hidden"
+      >
         <div className="relative flex justify-between items-center px-3 mb-3">
           <h2 className="text-2xl font-bold mb-2 text-green-500">ChatApp</h2>
 
@@ -107,23 +119,26 @@ export function Home() {
           </button>
 
           {openDropdown && (
-            <div className="absolute top-10 right-2 w-40 bg-white border border-gray-200 rounded-lg shadow-md py-2 z-10"
-            onMouseLeave={() => setOpenDropdown(false)}>
-              <button
+            <div
+              className="absolute right-8 top-10 w-36 bg-white border border-gray-300 rounded-lg shadow-lg z-10"
+              onMouseLeave={() => setOpenDropdown(false)}
+            >
+              <ul className="text-sm p-1">
+              <li
                 onClick={() => navigate("/profile")}
-                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700"
+                className=" flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 cursor-pointer"
               >
-                View Profile
-              </button>
-              <button
-                onClick={() => navigate("/settings")}
-                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700"
+                <Users size={18} />
+                New group
+              </li>
+              <hr className="text-gray-300 m-2" />
+              <li className="flex items-center gap-2 px-4 py-2 hover:bg-red-100 rounded hover:text-red-600 cursor-pointer"
+                onClick={() => handleLogout() }
               >
-                Settings
-              </button>
-              <div className="ml-1">
-              <LogoutBtn />
-              </div>
+                <LogOut size={18} />
+                Logout
+              </li>
+              </ul>
             </div>
           )}
         </div>
@@ -141,7 +156,9 @@ export function Home() {
           />
 
           {searchResults.length > 0 && (
-            <div className="absolute z-10 w-full bg-white border border-gray-200 rounded shadow-lg mt-1">
+            <div className="absolute z-10 w-full bg-white border border-gray-200 rounded shadow-lg mt-1"
+              onMouseLeave={() => setSearchResults([])}
+            >
               {searchResults.map((user) => (
                 <div
                   key={user._id}
@@ -173,7 +190,14 @@ export function Home() {
       </aside>
 
       {/* Right side for conversation */}
-      <main className="flex-1 bg-gray-300">
+      <main
+        className="flex-1 ml-0.5 bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/background.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         <Outlet />
       </main>
     </div>

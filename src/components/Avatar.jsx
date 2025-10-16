@@ -29,7 +29,7 @@ function Avatar({ src, size = 80, alt = "User Avatar" }) {
         minHeight: `${size}px`,
       }}
     >
-      <img
+      <img 
         src={src || defaultAvatar}
         alt={alt}
         className="w-full h-full object-cover"
