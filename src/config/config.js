@@ -42,12 +42,18 @@ export const getAllUsers = async () => {
     return response.data?.data;
 }
 
+export const blockUser = async (userId, contactId) => {
+    const response = await API.put(`/users/blockuser/${userId}/${contactId}`);
+    return response.data?.data;
+}
+
+export const unblockUser = async (userId, contactId) => {
+    const response = await API.put(`/users/unblockuser/${userId}/${contactId}`);
+    return response.data?.data;
+}
+
 // message api
 
-// export const sendMessage = async (data) => {
-//     const response = await API.post("/messages/sendMessage", data);
-//     return response.data?.data;
-// }
 
 export const sendMessage = async (data, isFile = false) => {
   const config = isFile
@@ -79,7 +85,12 @@ export const getUserChats = async (userId) => {
     return response.data?.data;
 }
 
-export const deleteMessage = async (messageId) => {
-    const response = await API.delete(`/messages/deleteMessage/${messageId}`);
+export const deleteMessage = async (messageId, userId) => {
+    const response = await API.delete(`/messages/deleteMessage/${messageId}/${userId}`);
+    return response.data?.data;
+}
+
+export const deleteConversation = async (userId, contactId) => {
+    const response = await API.delete(`/messages/deleteconversation/${userId}/${contactId}`);
     return response.data?.data;
 }

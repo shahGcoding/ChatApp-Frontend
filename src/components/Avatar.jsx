@@ -1,19 +1,3 @@
-// import React from "react";
-
-// function Avatar({width = "100px", src, alt= "user Avatar"}) {
-//   const defaultUser = "/2289_SkVNQSBGQU1PIDEwMjgtMTIy.jpg";
-//   return (
-//     <img
-//       src={src || defaultUser}
-//       alt={alt}
-//       className="w-32 h-32 rounded-full"
-//       style={{ width, height: "auto", display: "block" }}
-//     />
-//   ); 
-// }
-
-// export default Avatar;
-
 import React from "react";
 
 function Avatar({ src, size = 80, alt = "User Avatar" }) {
